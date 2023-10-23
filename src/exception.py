@@ -1,7 +1,17 @@
 import sys
 from src.logger import logging
 
-def error_message_detail(error, error_detail:sys):
+def error_message_detail(error, error_detail:sys) -> str:
+    '''
+        Format an error message with error type and details.
+
+        Args:
+            error (str): The error message when exception occurred
+            error_detail (str): Additional details about the error (eg., file name, line no, etc.,)
+
+        Returns:
+            str: A formatted error message containing the error and details.
+    '''
     _, _, exc_tb = error_detail.exc_info() # exc_tb contains on which file and on which line exception occurred
     filename = exc_tb.tb_frame.f_code.co_filename
     
