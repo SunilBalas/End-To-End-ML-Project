@@ -1,6 +1,7 @@
 import sys
 import os
 from dataclasses import dataclass
+from typing import Tuple
 
 import numpy as np
 import pandas as pd
@@ -74,7 +75,7 @@ class DataTransformation:
         except Exception as ex:
             raise CustomException(ex, sys)
 
-    def initiate_data_transformation(self, train_path:str, test_path:str) -> tuple:
+    def initiate_data_transformation(self, train_path:str, test_path:str) -> Tuple[np.ndarray, np.ndarray, str]:
         '''
             Transforms the data from the given train and test file paths.
             

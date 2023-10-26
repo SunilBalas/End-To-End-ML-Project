@@ -1,14 +1,16 @@
 # for reading the data
 import os
 import sys
+from typing import Tuple
 
 import pandas as pd
 from dataclasses import dataclass
 
 from src.exception import CustomException
 from src.logger import logging
-from src.components.data_transformation import DataTransformation, DataTransformationConfig
+from src.components.data_transformation import DataTransformation
 from src.utils import split_train_test_data
+from src.components.model_trainer import ModelTrainer
 
 @dataclass
 class DataIngestionConfig:
@@ -21,7 +23,7 @@ class DataIngestion:
     def __init__(self):
         self.ingestion_config = DataIngestionConfig()
 
-    def initiate_data_ingestion(self) -> tuple:
+    def initiate_data_ingestion(self) -> Tuple[str, str]:
         """
             Load data from various sources, preprocess it, and save train and test sets.
                 
@@ -60,5 +62,10 @@ class DataIngestion:
 if __name__ == "__main__":
     obj = DataIngestion()
     train_data, test_data = obj.initiate_data_ingestion()
+    
     data_transformation = DataTransformation()
-    data_transformation.initiate_data_transformation(train_data, test_data)
+    train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_data, test_data)
+    
+    model_trainer = ModelTrainer()
+    score = model_trainer.initiate_model_trainer(train_arr, test_arr)
+    print(f"Best Model Score: {score}") # 0.8518118290114164
