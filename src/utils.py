@@ -8,7 +8,7 @@ import pandas as pd
 import dill
 
 from sklearn.compose import ColumnTransformer
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.metrics import r2_score
 
 from src.exception import CustomException
@@ -63,7 +63,7 @@ def save_object(file_path:str, obj:ColumnTransformer) -> None:
     except Exception as ex:
         raise CustomException(ex, sys)
     
-def evaluate_models(X_train:np.ndarray, y_train:np.ndarray, X_test:np.ndarray, y_test:np.ndarray, models:Dict[str, object]) -> Dict[str, float]:
+def evaluate_models(X_train:np.ndarray, y_train:np.ndarray, X_test:np.ndarray, y_test:np.ndarray, models:Dict[str, object], params:Dict[str, Dict[str, list]]) -> Dict[str, float]:
     '''
         Train Regression Models and Return R2 scores for test data.
 
@@ -73,6 +73,7 @@ def evaluate_models(X_train:np.ndarray, y_train:np.ndarray, X_test:np.ndarray, y
             - X_test (numpy.ndarray): Feature matrix for testing data
             - y_test (numpy.ndarray): Target vector for testing data
             - models (dict): A dictionary where keys are model names and values are instantiated regression models
+            - params (dict): A dictionary where keys are model names and values are hyper parameters
 
         Returns:
             - report (dict): A dictionary where keys are model names and values are the R2 scores on the test data
@@ -82,9 +83,14 @@ def evaluate_models(X_train:np.ndarray, y_train:np.ndarray, X_test:np.ndarray, y
 
         for i in range(len(list(models))):
             model = list(models.values())[i]
-            
-            model.fit(X_train,y_train)
+            param = params[list(models.keys())[i]]
 
+            gs = GridSearchCV(model, param, cv=3)
+            gs.fit(X_train,y_train)
+
+            model.set_params(**gs.best_params_)
+            model.fit(X_train,y_train)
+            
             y_train_pred = model.predict(X_train)
             y_test_pred = model.predict(X_test)
 
