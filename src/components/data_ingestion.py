@@ -20,7 +20,7 @@ class DataIngestionConfig:
 
 
 class DataIngestion:
-    def __init__(self):
+    def __init__(self) -> None:
         self.ingestion_config = DataIngestionConfig()
 
     def initiate_data_ingestion(self) -> Tuple[str, str]:

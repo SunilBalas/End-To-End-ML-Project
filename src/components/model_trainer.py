@@ -22,7 +22,7 @@ class ModelTrainerConfig:
     trained_model_file_path:str = os.path.join('artifacts', 'model.pkl')
     
 class ModelTrainer:
-    def __init__(self):
+    def __init__(self) -> None:
         self.model_trainer_config = ModelTrainerConfig()
         
     def initiate_model_trainer(self, train_arr:np.ndarray, test_arr:np.ndarray) -> float:

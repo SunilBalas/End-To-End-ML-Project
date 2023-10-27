@@ -63,7 +63,12 @@ def save_object(file_path:str, obj:ColumnTransformer) -> None:
     except Exception as ex:
         raise CustomException(ex, sys)
     
-def evaluate_models(X_train:np.ndarray, y_train:np.ndarray, X_test:np.ndarray, y_test:np.ndarray, models:Dict[str, object], params:Dict[str, Dict[str, list]]) -> Dict[str, float]:
+def evaluate_models(X_train:np.ndarray, 
+                    y_train:np.ndarray, 
+                    X_test:np.ndarray, 
+                    y_test:np.ndarray, 
+                    models:Dict[str, any], 
+                    params:Dict[str, any]) -> Dict[str, float]:
     '''
         Train Regression Models and Return R2 scores for test data.
 
@@ -103,3 +108,19 @@ def evaluate_models(X_train:np.ndarray, y_train:np.ndarray, X_test:np.ndarray, y
 
     except Exception as e:
         raise CustomException(e, sys)
+    
+def load_object(file_path: str) -> any:
+    '''
+        Load an object from a binary file using the dill library.
+
+        Args:
+            - file_path (str): The path to the binary file from which to load the object
+
+        Returns:
+            - any: The deserialized object read from the file
+    '''
+    try:
+        with open(file_path, 'rb') as file:
+            return dill.load(file)
+    except Exception as ex:
+        raise CustomException(ex, sys)

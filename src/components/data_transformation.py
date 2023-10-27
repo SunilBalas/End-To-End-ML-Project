@@ -21,7 +21,7 @@ class DataTransformationConfig:
 
 
 class DataTransformation:
-    def __init__(self):
+    def __init__(self) -> None:
         self.data_transformation_config = DataTransformationConfig()
 
     def get_data_transformer_object(self) -> ColumnTransformer:
